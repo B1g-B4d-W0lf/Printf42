@@ -15,5 +15,6 @@ int	ft_putnbr_p(unsigned long long n, int *len);
 int	ft_print_p(unsigned long long ptr);
 int	triage(char c, va_list ptr);
 int	ft_printf(const char *str, ...);
+int	ft_putnbr_u(unsigned int n, int *len);
 
 #endif
