@@ -1,8 +1,42 @@
-#include "libftprintf.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: wfreulon <wfreulon@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/25 21:57:42 by wfreulon          #+#    #+#             */
+/*   Updated: 2023/01/25 23:10:51 by wfreulon         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "ft_printf.h"
+
+int	ft_putnbr_p(unsigned long long n, int *len)
+{
+	if (n >= 16)
+		ft_putnbr_p(n / 16, len);
+	ft_putchar(HEXA[n % 16]);
+	return (*len += 1);
+}
+
+int	ft_print_p(unsigned long long ptr)
+{
+	int	len;
+
+	if (ptr == 0)
+		len = ft_putstr("(nil)");
+	else
+	{
+		len = ft_putstr("0x");
+		ft_putnbr_p(ptr, &len);
+	}
+	return (len);
+}
 
 int	triage(char c, va_list ptr)
 {
-	int len;
+	int	len;
 
 		len = 0;
 	if (c == 'c')
@@ -22,29 +56,32 @@ int	triage(char c, va_list ptr)
 	else if (c == '%')
 		len += ft_putchar('%');
 	return (len);
-
 }
 
 int	ft_printf(const char *str, ...)
 {
-	va_list ptr;
-	int len;
-	int i;
+	va_list	ptr;
+	int		len;
+	int		i;
 
 	i = 0;
 	len = 0;
 	va_start(ptr, str);
+	if (str == NULL)
+		return (0);
 	while (str[i])
+	{
 		if (str[i] == '%')
 		{
 			len += triage(str[i + 1], ptr);
 			i += 2;
 		}
-		else 
+		else
 		{
 			len += ft_putchar(str[i]);
 			i++;
 		}
+	}
 	va_end(ptr);
-	return(len);
+	return (len);
 }
